@@ -1,3 +1,12 @@
+class ConnectionStringException(Exception):
+    """
+    Exception that is raised when
+    the connection string is not provided
+    """
+
+    pass
+
+
 class DatabaseConnectionException(Exception):
     """
     Exception that is raised when
