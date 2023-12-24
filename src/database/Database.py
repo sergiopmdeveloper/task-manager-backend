@@ -29,7 +29,7 @@ class Database:
     -------
     get_client()
         Connect to database and set client
-    __test_connection(client)
+    _test_connection(client)
         Test connection to database
     """
 
@@ -55,11 +55,11 @@ class Database:
         except:
             raise DatabaseConnectionException("Error connecting to database")
 
-        self.__test_connection(client=client)
+        self._test_connection(client=client)
 
         return client
 
-    def __test_connection(self, client: MongoClient) -> None:
+    def _test_connection(self, client: MongoClient) -> None:
         """
         Test connection to database
 
