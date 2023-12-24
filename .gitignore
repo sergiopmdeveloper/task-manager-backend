@@ -1,2 +1,8 @@
-# Development containers
+# Development container
 .devcontainer
+
+# VSCode configuration
+.vscode
+
+# Python cache
+__pycache__
