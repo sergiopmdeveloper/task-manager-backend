@@ -6,3 +6,9 @@
 
 # Python cache
 __pycache__
+
+# Environment variables
+.env
+
+# Pytest cache
+.pytest_cache
