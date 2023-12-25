@@ -19,8 +19,10 @@ class Auth:
 
     Methods
     -------
-    sign_up(user: User) -> str
+    sign_up(user: User) -> Dict[str, str]
         Sign up user
+    _get_user_by_email(email: str) -> Dict[str, str]
+        Get user by email
     """
 
     def __init__(self):
@@ -73,7 +75,7 @@ class Auth:
 
         Returns
         -------
-        dict
+        Dict[str, str]
             User data
         """
 

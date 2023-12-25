@@ -10,10 +10,6 @@ from src.database.exceptions import (
     DatabaseResponseException,
 )
 
-"""
-Load environment variables
-"""
-
 load_dotenv()
 
 
@@ -28,11 +24,11 @@ class Database:
 
     Methods
     -------
-    get_client()
+    get_client() -> MongoClient
         Connect to database and return client
-    _set_connection_string()
+    _set_connection_string() -> None
         Set connection string to connect to database
-    _test_connection(client)
+    _test_connection(client: MongoClient) -> None
         Test connection to database
     """
 
@@ -46,6 +42,11 @@ class Database:
     def get_client(self) -> MongoClient:
         """
         Connect to database and return client
+
+        Returns
+        -------
+        MongoClient
+            Database client
 
         Raises
         ------

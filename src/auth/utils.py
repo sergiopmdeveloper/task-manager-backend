@@ -5,24 +5,18 @@ from dotenv import load_dotenv
 from jose import jwt
 from passlib.context import CryptContext
 
-# Load environment variables
-
 load_dotenv()
 
 
-# Context for hashing passwords
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
-# JWT configuration
 
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_TIME_MINUTES = 30
 
 
-def get_password_hash(password) -> str:
+def get_password_hash(password: str) -> str:
     """
     Get password hash
 
