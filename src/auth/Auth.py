@@ -1,3 +1,6 @@
+from typing import Dict
+
+from src.auth.exceptions import UserAlreadyExists
 from src.auth.schemas import User
 from src.auth.utils import get_password_hash
 from src.database.Database import Database
@@ -43,6 +46,9 @@ class Auth:
             User ID
         """
 
+        if self._get_user_by_email(email=user.email):
+            raise UserAlreadyExists()
+
         user_data = {
             "name": user.name,
             "email": user.email,
@@ -52,3 +58,20 @@ class Auth:
         user_data["password"] = get_password_hash(user_data["password"])
 
         return self.users.insert_one(user_data).inserted_id
+
+    def _get_user_by_email(self, email: str) -> Dict[str, str]:
+        """
+        Get user by email
+
+        Parameters
+        ----------
+        email : str
+            User email
+
+        Returns
+        -------
+        dict
+            User data
+        """
+
+        return self.users.find_one({"email": email})
