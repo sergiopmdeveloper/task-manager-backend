@@ -2,7 +2,7 @@ from typing import Dict
 
 from src.auth.exceptions import UserAlreadyExists
 from src.auth.schemas import User
-from src.auth.utils import get_password_hash
+from src.auth.utils import create_access_token, get_password_hash
 from src.database.Database import Database
 
 
@@ -31,7 +31,7 @@ class Auth:
         self.client = Database().get_client()
         self.users = self.client["task-manager-db"]["users"]
 
-    def sign_up(self, user: User) -> str:
+    def sign_up(self, user: User) -> Dict[str, str]:
         """
         Sign up user
 
@@ -42,8 +42,8 @@ class Auth:
 
         Returns
         -------
-        str
-            User ID
+        Dict[str, str]
+            Response detail
         """
 
         if self._get_user_by_email(email=user.email):
@@ -57,7 +57,10 @@ class Auth:
 
         user_data["password"] = get_password_hash(user_data["password"])
 
-        return self.users.insert_one(user_data).inserted_id
+        return {
+            "user_id": str(self.users.insert_one(user_data).inserted_id),
+            "access_token": create_access_token(),
+        }
 
     def _get_user_by_email(self, email: str) -> Dict[str, str]:
         """

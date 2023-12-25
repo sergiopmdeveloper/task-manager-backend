@@ -24,6 +24,6 @@ def sign_up(user: User) -> Dict[str, str]:
         Response detail
     """
 
-    user_id = Auth().sign_up(user=user)
+    response = Auth().sign_up(user=user)
 
-    return {"detail": f"User {user_id} created successfully"}
+    return response
