@@ -1,4 +1,5 @@
 from src.auth.schemas import User
+from src.auth.utils import get_password_hash
 from src.database.Database import Database
 
 
@@ -47,5 +48,7 @@ class Auth:
             "email": user.email,
             "password": user.password.get_secret_value(),
         }
+
+        user_data["password"] = get_password_hash(user_data["password"])
 
         return self.users.insert_one(user_data).inserted_id
