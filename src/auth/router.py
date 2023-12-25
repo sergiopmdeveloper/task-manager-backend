@@ -1,12 +1,29 @@
-from fastapi import APIRouter
+from typing import Dict
 
+from fastapi import APIRouter, status
+
+from src.auth.Auth import Auth
 from src.auth.schemas import User
 
 auth_router = APIRouter(prefix="/auth")
 
 
-@auth_router.post("/sign-up")
-def sign_up(user: User) -> User:
-    ...
+@auth_router.post("/sign-up", status_code=status.HTTP_201_CREATED)
+def sign_up(user: User) -> Dict[str, str]:
+    """
+    Sign up user
 
-    return user
+    Parameters
+    ----------
+    user : User
+        User data
+
+    Returns
+    -------
+    Dict[str, str]
+        Response detail
+    """
+
+    user_id = Auth().sign_up(user=user)
+
+    return {"detail": f"User {user_id} created successfully"}
