@@ -59,9 +59,12 @@ class Auth:
 
         user_data["password"] = get_password_hash(user_data["password"])
 
+        access_token = create_access_token()
+        user_id = str(self.users.insert_one(user_data).inserted_id)
+
         return {
-            "user_id": str(self.users.insert_one(user_data).inserted_id),
-            "access_token": create_access_token(),
+            "user_id": user_id,
+            "access_token": access_token,
         }
 
     def _get_user_by_email(self, email: str) -> Dict[str, str]:

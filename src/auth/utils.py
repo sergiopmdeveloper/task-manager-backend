@@ -5,13 +5,15 @@ from dotenv import load_dotenv
 from jose import jwt
 from passlib.context import CryptContext
 
+from src.auth.exceptions import SecretNotProvided
+
 load_dotenv()
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_TIME_MINUTES = 30
 
@@ -42,7 +44,15 @@ def create_access_token() -> str:
     -------
     str
         Access token
+
+    Raises
+    ------
+    SecretNotProvided
+        If JWT secret key is not provided
     """
+
+    if not JWT_SECRET_KEY:
+        raise SecretNotProvided("JWT secret key not provided")
 
     token_props = {
         "iat": datetime.utcnow(),

@@ -16,3 +16,12 @@ class UserAlreadyExists(HTTPException):
             status_code=409,
             detail="User already exists",
         )
+
+
+class SecretNotProvided(Exception):
+    """
+    Exception that is raised
+    when secret is not provided
+    """
+
+    pass
