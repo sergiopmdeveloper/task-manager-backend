@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from dotenv import load_dotenv
 from jose import jwt
@@ -55,8 +55,9 @@ def create_access_token() -> str:
         raise SecretNotProvided("JWT secret key not provided")
 
     token_props = {
-        "iat": datetime.utcnow(),
-        "exp": datetime.utcnow() + timedelta(minutes=JWT_EXPIRATION_TIME_MINUTES),
+        "iat": datetime.now(timezone.utc),
+        "exp": datetime.now(timezone.utc)
+        + timedelta(minutes=JWT_EXPIRATION_TIME_MINUTES),
     }
 
     return jwt.encode(claims=token_props, key=JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
