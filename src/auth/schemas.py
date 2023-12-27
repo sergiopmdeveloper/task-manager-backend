@@ -1,8 +1,12 @@
 from pydantic import BaseModel, SecretStr
 
 
-# User schema in the sign-up endpoint
 class User(BaseModel):
     name: str
     email: str
     password: SecretStr
+
+
+class SignUpResponse(BaseModel):
+    user_id: str
+    access_token: str

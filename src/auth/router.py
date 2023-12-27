@@ -1,15 +1,28 @@
-from typing import Dict
-
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, status
 
 from src.auth.Auth import Auth
-from src.auth.schemas import User
+from src.auth.schemas import SignUpResponse, User
 
 auth_router = APIRouter(prefix="/auth")
 
 
-@auth_router.post("/sign-up", status_code=status.HTTP_201_CREATED)
-def sign_up(user: User) -> Dict[str, str]:
+def get_auth() -> Auth:
+    """
+    Returns an Auth instance
+
+    Returns
+    -------
+    Auth
+        Auth instance
+    """
+
+    return Auth()
+
+
+@auth_router.post(
+    "/sign-up", status_code=status.HTTP_201_CREATED, response_model=SignUpResponse
+)
+def sign_up(user: User, auth: Auth = Depends(get_auth)) -> SignUpResponse:
     """
     Sign up user
 
@@ -17,13 +30,13 @@ def sign_up(user: User) -> Dict[str, str]:
     ----------
     user : User
         User data
+    auth : Auth
+        Auth instance
 
     Returns
     -------
-    Dict[str, str]
+    SignUpResponse
         Response detail
     """
 
-    response = Auth().sign_up(user=user)
-
-    return response
+    return auth.sign_up(user=user)
