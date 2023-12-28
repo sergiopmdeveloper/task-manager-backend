@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "task-manager-backend",
+    "builds": [
+      {
+        "src": "src/main.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "src/main.py"
+      }
+    ]
+  }
