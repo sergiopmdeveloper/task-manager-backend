@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from src.auth.Auth import Auth
-from src.auth.schemas import AuthResponse, User, UserSignIn
+from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
 
 auth_router = APIRouter(prefix="/auth")
 
@@ -48,13 +48,13 @@ def sign_in(
 @auth_router.post(
     "/sign-up", status_code=status.HTTP_201_CREATED, response_model=AuthResponse
 )
-def sign_up(user: User, auth: Auth = Depends(get_auth)) -> AuthResponse:
+def sign_up(user: UserSignUp, auth: Auth = Depends(get_auth)) -> AuthResponse:
     """
     Sign up user
 
     Parameters
     ----------
-    user : User
+    user : UserSignUp
         User data
     auth : Auth
         Auth instance

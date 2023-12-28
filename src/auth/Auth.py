@@ -1,7 +1,7 @@
 from typing import Dict, Optional
 
 from src.auth.exceptions import SignInWrongCredentials, UserAlreadyExists
-from src.auth.schemas import AuthResponse, User, UserSignIn
+from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
 from src.auth.utils import create_access_token, get_password_hash, verify_password
 from src.database.Database import Database
 
@@ -19,9 +19,11 @@ class Auth:
 
     Methods
     -------
-    sign_up(user: User) -> Dict[str, str]
+    sign_up(user: UserSignUp) -> AuthResponse
         Sign up user
-    _get_user_by_email(email: str) -> Dict[str, str]
+    sign_in(user: UserSignIn) -> AuthResponse
+        Sign in user
+    _get_user_by_email(email: str) -> Optional[Dict[str, str]]
         Get user by email
     """
 
@@ -33,13 +35,13 @@ class Auth:
         self.client = Database().get_client()
         self.users = self.client["task-manager-db"]["users"]
 
-    def sign_up(self, user: User) -> AuthResponse:
+    def sign_up(self, user: UserSignUp) -> AuthResponse:
         """
         Sign up user
 
         Parameters
         ----------
-        user : User
+        user : UserSignUp
             User data
 
         Returns
@@ -70,7 +72,7 @@ class Auth:
 
         Parameters
         ----------
-        user : User
+        user : UserSignIn
             User data
 
         Returns
