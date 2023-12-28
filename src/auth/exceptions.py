@@ -15,6 +15,20 @@ class SignInWrongCredentials(HTTPException):
         super().__init__(status_code=401, detail="Incorrect email or password")
 
 
+class TokenVerificationError(HTTPException):
+    """
+    Exception that is raised when
+    token verification fails
+    """
+
+    def __init__(self):
+        """
+        Initialize exception
+        """
+
+        super().__init__(status_code=401, detail="Token verification failed")
+
+
 class UserAlreadyExists(HTTPException):
     """
     Exception that is raised

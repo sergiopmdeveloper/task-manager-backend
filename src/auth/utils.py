@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from jose import jwt
 from passlib.context import CryptContext
 
-from src.auth.exceptions import SecretNotProvided
+from src.auth.exceptions import SecretNotProvided, TokenVerificationError
 
 load_dotenv()
 
@@ -82,3 +82,36 @@ def create_access_token() -> str:
     }
 
     return jwt.encode(claims=token_props, key=JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+
+
+def verify_access_token(token: str) -> bool:
+    """
+    Verify access token
+
+    Parameters
+    ----------
+    token : str
+        Access token
+
+    Returns
+    -------
+    bool
+        Whether token is valid
+
+    Raises
+    ------
+    SecretNotProvided
+        If JWT secret key is not provided
+    """
+
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+
+    if not JWT_SECRET_KEY:
+        raise SecretNotProvided("JWT secret key not provided")
+
+    try:
+        jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+    except:
+        raise TokenVerificationError()
+
+    return True

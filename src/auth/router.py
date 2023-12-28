@@ -20,7 +20,7 @@ def get_auth() -> Auth:
     return Auth()
 
 
-@auth_router.post("/token", response_model=AuthResponse)
+@auth_router.post("/token", status_code=status.HTTP_200_OK, response_model=AuthResponse)
 def sign_in(
     form_data: OAuth2PasswordRequestForm = Depends(), auth: Auth = Depends(get_auth)
 ) -> AuthResponse:
