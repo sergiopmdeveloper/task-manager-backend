@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, status
+from fastapi.security import OAuth2PasswordRequestForm
 
 from src.auth.Auth import Auth
-from src.auth.schemas import SignUpResponse, User
+from src.auth.schemas import SignInResponse, SignUpResponse, User, UserSignIn
 
 auth_router = APIRouter(prefix="/auth")
 
@@ -17,6 +18,31 @@ def get_auth() -> Auth:
     """
 
     return Auth()
+
+
+@auth_router.post("/token", response_model=SignInResponse)
+def sign_in(
+    form_data: OAuth2PasswordRequestForm = Depends(), auth: Auth = Depends(get_auth)
+):
+    """
+    Sign in user and email and token
+
+    Parameters
+    ----------
+    form_data : OAuth2PasswordRequestForm
+        Form data with username (email) and password
+    auth : Auth
+        Auth instance
+
+    Returns
+    -------
+    SignInResponse
+        Response detail
+    """
+
+    user = UserSignIn(email=form_data.username, password=form_data.password)
+
+    return auth.sign_in(user=user)
 
 
 @auth_router.post(

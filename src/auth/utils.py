@@ -35,6 +35,26 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verify password
+
+    Parameters
+    ----------
+    plain_password : str
+        Plain password
+    hashed_password : str
+        Hashed password
+
+    Returns
+    -------
+    bool
+        Whether password is valid
+    """
+
+    return pwd_context.verify(plain_password, hashed_password)
+
+
 def create_access_token() -> str:
     """
     Create access token
