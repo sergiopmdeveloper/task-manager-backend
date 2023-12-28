@@ -12,12 +12,7 @@ class UserSignIn(BaseModel):
     password: SecretStr
 
 
-class SignUpResponse(BaseModel):
-    user_id: str
-    access_token: str
-
-
-class SignInResponse(BaseModel):
+class AuthResponse(BaseModel):
     email: str
     access_token: str
     token_type: str = "bearer"

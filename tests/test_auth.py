@@ -7,7 +7,7 @@ from jose import jwt
 
 from src.auth.Auth import Auth
 from src.auth.exceptions import UserAlreadyExists
-from src.auth.schemas import SignUpResponse, User
+from src.auth.schemas import AuthResponse, User
 from src.auth.utils import (
     JWT_ALGORITHM,
     create_access_token,
@@ -18,7 +18,7 @@ from src.main import app
 client = TestClient(app)
 
 fake_user = User(name="fake_name", email="fake_email", password="fake_password")
-fake_response = SignUpResponse(user_id="fake_user_id", access_token="fake_access_token")
+fake_response = AuthResponse(email=fake_user.email, access_token="fake_access_token")
 
 
 @pytest.fixture
@@ -112,12 +112,11 @@ def test_auth_sign_up_returns_response(auth: Auth) -> None:
     """
 
     auth.users.find_one.return_value = None
-    auth.users.insert_one.return_value.inserted_id = fake_response.user_id
 
     response = auth.sign_up(user=fake_user)
 
-    assert ["user_id", "access_token"] == list(response.__dict__.keys())
-    assert response.user_id == fake_response.user_id
+    assert ["email", "access_token", "token_type"] == list(response.__dict__.keys())
+    assert response.email == fake_response.email
     assert isinstance(response.access_token, str)
 
 

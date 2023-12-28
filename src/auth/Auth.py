@@ -1,7 +1,7 @@
 from typing import Dict, Optional
 
 from src.auth.exceptions import SignInWrongCredentials, UserAlreadyExists
-from src.auth.schemas import SignInResponse, SignUpResponse, User, UserSignIn
+from src.auth.schemas import AuthResponse, User, UserSignIn
 from src.auth.utils import create_access_token, get_password_hash, verify_password
 from src.database.Database import Database
 
@@ -33,7 +33,7 @@ class Auth:
         self.client = Database().get_client()
         self.users = self.client["task-manager-db"]["users"]
 
-    def sign_up(self, user: User) -> SignUpResponse:
+    def sign_up(self, user: User) -> AuthResponse:
         """
         Sign up user
 
@@ -44,7 +44,7 @@ class Auth:
 
         Returns
         -------
-        SignUpResponse
+        AuthResponse
             Response detail
         """
 
@@ -59,12 +59,12 @@ class Auth:
 
         user_data["password"] = get_password_hash(user_data["password"])
 
+        self.users.insert_one(user_data)
         access_token = create_access_token()
-        user_id = str(self.users.insert_one(user_data).inserted_id)
 
-        return SignUpResponse(user_id=user_id, access_token=access_token)
+        return AuthResponse(email=user_data["email"], access_token=access_token)
 
-    def sign_in(self, user: UserSignIn) -> SignInResponse:
+    def sign_in(self, user: UserSignIn) -> AuthResponse:
         """
         Sign in user
 
@@ -75,7 +75,7 @@ class Auth:
 
         Returns
         -------
-        SignInResponse
+        AuthResponse
             Response detail
         """
 
@@ -90,7 +90,7 @@ class Auth:
         access_token = create_access_token()
         email = str(user_data["email"])
 
-        return SignInResponse(email=email, access_token=access_token)
+        return AuthResponse(email=email, access_token=access_token)
 
     def _get_user_by_email(self, email: str) -> Optional[Dict[str, str]]:
         """
