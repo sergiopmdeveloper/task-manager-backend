@@ -98,7 +98,7 @@ def test_database_response_error(database: Database) -> None:
         assert str(exception.value) == "Error in database response"
 
 
-def test_database_get_client(database: Database) -> None:
+def test_database_get_client_returns_client(database: Database) -> None:
     """
     Test if the client is returned in get_client
 
@@ -115,9 +115,9 @@ def test_database_get_client(database: Database) -> None:
     assert client == mock_client.return_value
 
 
-def test_database_get_client_submethods_are_called(database: Database) -> None:
+def test_database_get_client_methods_are_called(database: Database) -> None:
     """
-    Test if the submethods of get_client are called
+    Test if the methods of get_client are called
 
     Parameters
     ----------

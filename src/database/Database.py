@@ -10,10 +10,6 @@ from src.database.exceptions import (
     DatabaseResponseException,
 )
 
-"""
-Load environment variables
-"""
-
 load_dotenv()
 
 
@@ -28,11 +24,11 @@ class Database:
 
     Methods
     -------
-    get_client()
+    get_client() -> MongoClient
         Connect to database and return client
-    _set_connection_string()
+    _set_connection_string() -> None
         Set connection string to connect to database
-    _test_connection(client)
+    _test_connection(client: MongoClient) -> None
         Test connection to database
     """
 
@@ -46,6 +42,11 @@ class Database:
     def get_client(self) -> MongoClient:
         """
         Connect to database and return client
+
+        Returns
+        -------
+        MongoClient
+            Database client
 
         Raises
         ------
@@ -74,10 +75,12 @@ class Database:
             If the connection string is not provided
         """
 
-        try:
-            self.__connection_string = os.environ["MONGODB_CONNECTION_STRING"]
-        except KeyError:
+        connection_string = os.getenv("MONGODB_CONNECTION_STRING")
+
+        if not connection_string:
             raise ConnectionStringException("Connection string not provided")
+
+        self.__connection_string = connection_string
 
     def _test_connection(self, client: MongoClient) -> None:
         """
