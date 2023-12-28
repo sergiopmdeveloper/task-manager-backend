@@ -10,7 +10,6 @@ from src.auth.exceptions import UserAlreadyExists
 from src.auth.schemas import SignUpResponse, User
 from src.auth.utils import (
     JWT_ALGORITHM,
-    JWT_SECRET_KEY,
     create_access_token,
     get_password_hash,
 )
@@ -62,7 +61,7 @@ def test_auth_create_access_token() -> None:
     access_token = create_access_token()
 
     decoded_access_token = jwt.decode(
-        access_token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM]
+        access_token, os.environ["JWT_SECRET_KEY"], algorithms=[JWT_ALGORITHM]
     )
 
     assert ["iat", "exp"] == list(decoded_access_token.keys())

@@ -13,7 +13,6 @@ load_dotenv()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_TIME_MINUTES = 30
 
@@ -50,6 +49,8 @@ def create_access_token() -> str:
     SecretNotProvided
         If JWT secret key is not provided
     """
+
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
     if not JWT_SECRET_KEY:
         raise SecretNotProvided("JWT secret key not provided")
