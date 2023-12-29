@@ -11,27 +11,6 @@ from src.database.exceptions import (
 )
 
 
-@pytest.fixture
-def database(monkeypatch: MonkeyPatch) -> Database:
-    """
-    Returns a Database instance
-
-    Parameters
-    ----------
-    monkeypatch : MonkeyPatch
-        A pytest fixture for monkeypatching items
-
-    Returns
-    -------
-    Database
-        Database instance
-    """
-
-    monkeypatch.setenv("MONGODB_CONNECTION_STRING", "fake_connection_string")
-
-    return Database()
-
-
 def test_database_connection_string_error(
     database: Database, monkeypatch: MonkeyPatch
 ) -> None:
