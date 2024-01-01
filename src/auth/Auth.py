@@ -1,8 +1,8 @@
 from typing import Dict, Optional
 
-from src.auth.exceptions import UserAlreadyExists
-from src.auth.schemas import SignUpResponse, User
-from src.auth.utils import create_access_token, get_password_hash
+from src.auth.exceptions import SignInWrongCredentials, UserAlreadyExists
+from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
+from src.auth.utils import create_access_token, get_password_hash, verify_password
 from src.database.Database import Database
 
 
@@ -19,9 +19,11 @@ class Auth:
 
     Methods
     -------
-    sign_up(user: User) -> Dict[str, str]
+    sign_up(user: UserSignUp) -> AuthResponse
         Sign up user
-    _get_user_by_email(email: str) -> Dict[str, str]
+    sign_in(user: UserSignIn) -> AuthResponse
+        Sign in user
+    _get_user_by_email(email: str) -> Optional[Dict[str, str]]
         Get user by email
     """
 
@@ -33,18 +35,18 @@ class Auth:
         self.client = Database().get_client()
         self.users = self.client["task-manager-db"]["users"]
 
-    def sign_up(self, user: User) -> SignUpResponse:
+    def sign_up(self, user: UserSignUp) -> AuthResponse:
         """
         Sign up user
 
         Parameters
         ----------
-        user : User
+        user : UserSignUp
             User data
 
         Returns
         -------
-        SignUpResponse
+        AuthResponse
             Response detail
         """
 
@@ -59,10 +61,38 @@ class Auth:
 
         user_data["password"] = get_password_hash(user_data["password"])
 
+        self.users.insert_one(user_data)
         access_token = create_access_token()
-        user_id = str(self.users.insert_one(user_data).inserted_id)
 
-        return SignUpResponse(user_id=user_id, access_token=access_token)
+        return AuthResponse(email=user_data["email"], access_token=access_token)
+
+    def sign_in(self, user: UserSignIn) -> AuthResponse:
+        """
+        Sign in user
+
+        Parameters
+        ----------
+        user : UserSignIn
+            User data
+
+        Returns
+        -------
+        AuthResponse
+            Response detail
+        """
+
+        user_data = self._get_user_by_email(email=user.email)
+
+        if not user_data:
+            raise SignInWrongCredentials()
+
+        if not verify_password(user.password.get_secret_value(), user_data["password"]):
+            raise SignInWrongCredentials()
+
+        access_token = create_access_token()
+        email = str(user_data["email"])
+
+        return AuthResponse(email=email, access_token=access_token)
 
     def _get_user_by_email(self, email: str) -> Optional[Dict[str, str]]:
         """

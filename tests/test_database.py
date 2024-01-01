@@ -1,7 +1,7 @@
-import os
 from unittest.mock import MagicMock, patch
 
 import pytest
+from pytest import MonkeyPatch
 
 from src.database.Database import Database
 from src.database.exceptions import (
@@ -11,23 +11,9 @@ from src.database.exceptions import (
 )
 
 
-@pytest.fixture
-def database() -> Database:
-    """
-    Returns a Database instance
-
-    Returns
-    -------
-    Database
-        Database instance
-    """
-
-    os.environ["MONGODB_CONNECTION_STRING"] = "fake_connection_string"
-
-    return Database()
-
-
-def test_database_connection_string_error(database: Database) -> None:
+def test_database_connection_string_error(
+    database: Database, monkeypatch: MonkeyPatch
+) -> None:
     """
     Test if the connection string is not provided
 
@@ -35,9 +21,11 @@ def test_database_connection_string_error(database: Database) -> None:
     ----------
     database : Database
         Database instance
+    monkeypatch : MonkeyPatch
+        A pytest fixture for monkeypatching items
     """
 
-    del os.environ["MONGODB_CONNECTION_STRING"]
+    monkeypatch.delenv("MONGODB_CONNECTION_STRING")
 
     with pytest.raises(ConnectionStringException) as exception:
         database.get_client()
