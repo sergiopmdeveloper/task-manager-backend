@@ -64,7 +64,9 @@ class Auth:
         self.users.insert_one(user_data)
         access_token = create_access_token()
 
-        return AuthResponse(email=user_data["email"], access_token=access_token)
+        return AuthResponse(
+            name=user_data["name"], email=user_data["email"], access_token=access_token
+        )
 
     def sign_in(self, user: UserSignIn) -> AuthResponse:
         """
@@ -90,9 +92,10 @@ class Auth:
             raise SignInWrongCredentials()
 
         access_token = create_access_token()
-        email = str(user_data["email"])
 
-        return AuthResponse(email=email, access_token=access_token)
+        return AuthResponse(
+            name=user_data["name"], email=user_data["email"], access_token=access_token
+        )
 
     def _get_user_by_email(self, email: str) -> Optional[Dict[str, str]]:
         """

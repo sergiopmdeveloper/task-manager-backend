@@ -67,7 +67,9 @@ def fake_response() -> AuthResponse:
         AuthResponse instance
     """
 
-    return AuthResponse(email="fake_email", access_token="fake_access_token")
+    return AuthResponse(
+        name="fake_name", email="fake_email", access_token="fake_access_token"
+    )
 
 
 @pytest.fixture

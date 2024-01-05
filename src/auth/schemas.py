@@ -13,6 +13,7 @@ class UserSignIn(BaseModel):
 
 
 class AuthResponse(BaseModel):
+    name: str
     email: str
     access_token: str
     token_type: str = "bearer"
