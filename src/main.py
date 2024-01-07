@@ -47,7 +47,18 @@ async def custom_cors_middleware(
         origin = request.headers["origin"]
 
         if re.match(r"^https?://task-manager-frontend-.*\.vercel\.app$", origin):
+            if request.method == "OPTIONS":
+                return Response(
+                    headers={
+                        "Access-Control-Allow-Origin": origin,
+                        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                        "Access-Control-Allow-Headers": "*",
+                        "Access-Control-Allow-Credentials": "true",
+                    }
+                )
+
             response = await call_next(request)
+
             response.headers["Access-Control-Allow-Origin"] = origin
             response.headers[
                 "Access-Control-Allow-Methods"
