@@ -51,6 +51,7 @@ def fake_find_one_response() -> FakeFindOneResponse:
 
     return {
         "_id": ObjectId("60d5ec9af682fbd39d1b1681"),
+        "name": "fake_name",
         "email": "fake_email",
         "password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
     }
