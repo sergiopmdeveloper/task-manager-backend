@@ -49,6 +49,6 @@ def add_task(
 
     verify_access_token(token=token)
 
-    tasks.add_task(AddTaskRequest=AddTaskRequest)
+    tasks.add_task(add_task_request=AddTaskRequest)
 
     return AddTaskResponse(detail="Task added successfully")
