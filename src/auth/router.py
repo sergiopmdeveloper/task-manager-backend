@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from src.auth.Auth import Auth
 from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
 
 auth_router = APIRouter(prefix="/auth")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 
 def get_auth() -> Auth:
