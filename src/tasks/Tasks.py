@@ -11,7 +11,7 @@ class Tasks:
 
     Methods
     -------
-    add_task(AddTaskRequest: AddTask) -> AddTaskResponse
+    add_task(add_task_request: AddTask) -> AddTaskResponse
         Add task
     _get_user_by_email(email: str) -> Optional[Dict[str, str]]
         Get user by email
@@ -27,22 +27,30 @@ class Tasks:
         self.client = Database().get_client()
         self.users = self.client["task-manager-db"]["users"]
 
-    def add_task(self, AddTaskRequest: AddTask) -> AddTaskResponse:
+    def add_task(self, add_task_request: AddTask) -> AddTaskResponse:
         """
+        Add task to a user's list of tasks
 
         Parameters
         ----------
-        AddTaskRequest : AddTask
+        add_task_request : AddTask
             The request body
 
         Returns
         -------
         AddTaskResponse
             The response body
+
+        Raises
+        ------
+        UserNotFound
+            If the user is not found
+        TaskAlreadyExists
+            If the task already exists
         """
 
-        user = self._get_user_by_email(AddTaskRequest.email)
-        new_task = AddTaskRequest.task
+        user = self._get_user_by_email(add_task_request.email)
+        new_task = add_task_request.task
 
         if not user:
             raise UserNotFound()
@@ -59,7 +67,7 @@ class Tasks:
         tasks.append(new_task.__dict__)
 
         self.users.update_one(
-            {"email": AddTaskRequest.email}, {"$set": {"tasks": tasks}}
+            {"email": add_task_request.email}, {"$set": {"tasks": tasks}}
         )
 
         return AddTaskResponse(detail="Task added successfully")
