@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from src.auth.exceptions import SignInWrongCredentials, UserAlreadyExists
 from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
@@ -97,7 +97,7 @@ class Auth:
             name=user_data["name"], email=user_data["email"], access_token=access_token
         )
 
-    def _get_user_by_email(self, email: str) -> Optional[Dict[str, str]]:
+    def _get_user_by_email(self, email: str) -> Optional[Dict[str, Any]]:
         """
         Get user by email
 
