@@ -64,7 +64,7 @@ def test_add_task_new_task(
     tasks: Tasks,
     fake_add_task: AddTask,
     fake_user_tasks_not_existing_task: List[Dict[str, str]],
-):
+) -> None:
     """
     Test add_task method when task is new
 

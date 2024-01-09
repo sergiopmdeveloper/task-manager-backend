@@ -5,7 +5,7 @@ from bson import ObjectId
 from pytest import MonkeyPatch
 
 from src.auth.Auth import Auth
-from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
+from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp, VerifyTokenResponse
 from tests.test_auth.types import FakeFindOneResponse
 
 
@@ -71,6 +71,20 @@ def fake_response() -> AuthResponse:
     return AuthResponse(
         name="fake_name", email="fake_email", access_token="fake_access_token"
     )
+
+
+@pytest.fixture
+def fake_verify_token_response() -> VerifyTokenResponse:
+    """
+    Returns a VerifyTokenResponse instance
+
+    Returns
+    -------
+    VerifyTokenResponse
+        VerifyTokenResponse instance
+    """
+
+    return VerifyTokenResponse(detail="Token is valid")
 
 
 @pytest.fixture

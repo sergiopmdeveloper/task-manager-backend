@@ -13,7 +13,7 @@ from src.auth.exceptions import (
     TokenVerificationError,
     UserAlreadyExists,
 )
-from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp
+from src.auth.schemas import AuthResponse, UserSignIn, UserSignUp, VerifyTokenResponse
 from src.auth.utils import (
     JWT_ALGORITHM,
     create_access_token,
@@ -365,3 +365,24 @@ def test_auth_sign_up_route_201(
 
     assert response.status_code == 201
     assert response.json() == fake_response.__dict__
+
+
+def test_auth_verify_token_route_200(
+    fake_verify_token_response: VerifyTokenResponse,
+) -> None:
+    """
+    Test the verify_token route with status code 200
+
+    Parameters
+    ----------
+    fake_verify_token_response : VerifyTokenResponse
+        VerifyTokenResponse instance
+    """
+
+    with patch("src.auth.router.verify_access_token") as verify_access_token_mock:
+        verify_access_token_mock.return_value = True
+
+        response = client.post("/auth/verify-token", params={"token": "fake_token"})
+
+    assert response.status_code == 200
+    assert response.json() == fake_verify_token_response.__dict__
