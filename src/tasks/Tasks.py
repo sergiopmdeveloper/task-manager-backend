@@ -11,6 +11,8 @@ class Tasks:
 
     Methods
     -------
+    get_tasks(email: str) -> GetTasksResponse
+        Get a user's list of tasks
     add_task(add_task_request: AddTask) -> AddTaskResponse
         Add task
     _get_user_by_email(email: str) -> Optional[Dict[str, str]]
