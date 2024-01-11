@@ -95,7 +95,7 @@ def test_tasks_add_task_route_201(
     fake_add_task_response: AddTaskResponse, fake_add_task: AddTask
 ) -> None:
     """
-    Test /tasks/add_task route when status code is 201
+    Test /tasks/add-task route when status code is 201
 
     Parameters
     ----------
@@ -116,7 +116,7 @@ def test_tasks_add_task_route_201(
         fake_add_task_dict["task"] = fake_add_task_dict["task"].__dict__
 
         response = client.post(
-            "/tasks/add_task",
+            "/tasks/add-task",
             json=fake_add_task_dict,
             headers={"Authorization": "Bearer fake_token"},
         )

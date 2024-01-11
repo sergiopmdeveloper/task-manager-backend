@@ -92,6 +92,28 @@ def fake_add_task_response() -> AddTaskResponse:
 
 
 @pytest.fixture
+def fake_tasks() -> List[Dict[str, str]]:
+    """
+    Returns a list with a task
+
+    Returns
+    -------
+    List[Dict[str, str]]
+        List with a task
+    """
+
+    return [
+        {
+            "title": "fake_title",
+            "description": "fake_description",
+            "status": "fake_status",
+            "priority": "fake_priority",
+            "deadline": "fake_deadline",
+        }
+    ]
+
+
+@pytest.fixture
 def tasks(monkeypatch: MonkeyPatch) -> Tasks:
     """
     Returns a Tasks instance

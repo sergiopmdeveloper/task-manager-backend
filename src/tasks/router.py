@@ -24,7 +24,7 @@ def get_tasks_instance() -> Tasks:
 
 
 @tasks_router.get(
-    "/get_tasks", status_code=status.HTTP_200_OK, response_model=GetTasksResponse
+    "/get-tasks", status_code=status.HTTP_200_OK, response_model=GetTasksResponse
 )
 def get_tasks(
     email: str,
@@ -50,7 +50,7 @@ def get_tasks(
 
 
 @tasks_router.post(
-    "/add_task", status_code=status.HTTP_201_CREATED, response_model=AddTaskResponse
+    "/add-task", status_code=status.HTTP_201_CREATED, response_model=AddTaskResponse
 )
 def add_task(
     AddTaskRequest: AddTask,
