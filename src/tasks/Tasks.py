@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Optional
 
 from src.database.Database import Database
 from src.tasks.exceptions import TaskAlreadyExists, UserNotFound
-from src.tasks.schemas import AddTask, AddTaskResponse
+from src.tasks.schemas import AddTask, AddTaskResponse, GetTasksResponse
 
 
 class Tasks:
@@ -26,6 +26,38 @@ class Tasks:
 
         self.client = Database().get_client()
         self.users = self.client["task-manager-db"]["users"]
+
+    def get_tasks(self, email: str) -> GetTasksResponse:
+        """
+        Get a user's list of tasks
+
+        Parameters
+        ----------
+        email : str
+            The user's email
+
+        Returns
+        -------
+        GetTasksResponse
+            The response body
+
+        Raises
+        ------
+        UserNotFound
+            If the user is not found
+        """
+
+        user = self._get_user_by_email(email)
+
+        if not user:
+            raise UserNotFound()
+
+        tasks = self._get_user_tasks(user=user)
+
+        if not tasks:
+            tasks = []
+
+        return GetTasksResponse(tasks=tasks)
 
     def add_task(self, add_task_request: AddTask) -> AddTaskResponse:
         """

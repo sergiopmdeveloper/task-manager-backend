@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from pydantic import BaseModel
 
 
@@ -7,6 +9,10 @@ class Task(BaseModel):
     status: str
     priority: str
     deadline: str
+
+
+class GetTasksResponse(BaseModel):
+    tasks: List[Dict[str, str]]
 
 
 class AddTask(BaseModel):
