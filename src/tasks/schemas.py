@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List
 
 from pydantic import BaseModel
@@ -8,7 +9,7 @@ class Task(BaseModel):
     description: str
     status: str
     priority: str
-    deadline: str
+    deadline: datetime
 
 
 class GetTasksResponse(BaseModel):
