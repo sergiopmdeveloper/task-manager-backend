@@ -13,7 +13,7 @@ class Task(BaseModel):
 
 
 class GetTasksResponse(BaseModel):
-    tasks: List[Dict[str, str]]
+    tasks: List[Task]
 
 
 class AddTask(BaseModel):

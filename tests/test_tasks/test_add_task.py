@@ -114,6 +114,9 @@ def test_tasks_add_task_route_201(
 
         fake_add_task_dict = fake_add_task.__dict__
         fake_add_task_dict["task"] = fake_add_task_dict["task"].__dict__
+        fake_add_task_dict["task"]["deadline"] = str(
+            fake_add_task_dict["task"]["deadline"]
+        )
 
         response = client.post(
             "/tasks/add-task",

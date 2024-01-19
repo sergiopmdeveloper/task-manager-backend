@@ -65,6 +65,8 @@ def test_tasks_get_tasks_route_200(fake_tasks: List[Dict[str, str]]) -> None:
         )
         verify_access_token_mock.return_value = True
 
+        fake_tasks[0]["deadline"] = fake_tasks[0]["deadline"].isoformat()
+
         response = client.get(
             "/tasks/get-tasks",
             params={"email": "fake_email"},

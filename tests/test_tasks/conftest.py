@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List
 from unittest.mock import patch
 
@@ -26,7 +27,7 @@ def fake_add_task() -> AddTask:
             description="fake_description",
             status="fake_status",
             priority="fake_priority",
-            deadline="fake_deadline",
+            deadline=datetime(2021, 1, 1),
         ),
     )
 
@@ -48,7 +49,7 @@ def fake_user_tasks_existing_task() -> List[Dict[str, str]]:
             "description": "fake_description",
             "status": "fake_status",
             "priority": "fake_priority",
-            "deadline": "fake_deadline",
+            "deadline": datetime(2021, 1, 1),
         }
     ]
 
@@ -70,7 +71,7 @@ def fake_user_tasks_not_existing_task() -> List[Dict[str, str]]:
             "description": "fake_description_different",
             "status": "fake_status_different",
             "priority": "fake_priority_different",
-            "deadline": "fake_deadline_different",
+            "deadline": datetime(2021, 1, 1),
         }
     ]
 
@@ -108,7 +109,7 @@ def fake_tasks() -> List[Dict[str, str]]:
             "description": "fake_description",
             "status": "fake_status",
             "priority": "fake_priority",
-            "deadline": "fake_deadline",
+            "deadline": datetime(2021, 1, 1),
         }
     ]
 
